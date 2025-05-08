@@ -2,11 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import Image from 'next/image';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 // import { motion } from 'framer-motion'; // Non utilisé
-import { FiCamera, FiX, FiAlertCircle } from 'react-icons/fi';
+import { FiX } from 'react-icons/fi';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 // import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db } from '@/lib/firebase';
@@ -16,17 +17,27 @@ import { Button } from '@/components/ui/Button';
 import { MaintenanceCategory, PriorityLevel } from '@/types';
 import toast from 'react-hot-toast';
 
+// Définition du type FormData
+type FormData = {
+  category: string;
+  priority: string;
+  department: string;
+  location: string;
+  description: string;
+  comments?: string | null;
+};
+
 // Form validation schema
-const schema = yup.object({
+const schema = yup.object().shape({
   category: yup.string().required('Catégorie requise'),
   priority: yup.string().required('Priorité requise'),
   department: yup.string().required('Département requis'),
   location: yup.string().required('Emplacement requis'),
   description: yup.string().required('Description requise'),
-  comments: yup.string(),
-}).required();
+  comments: yup.string().nullable().optional(),
+});
 
-type FormData = yup.InferType<typeof schema>;
+// Le type FormData est défini ci-dessus
 
 const maintenanceCategories: { value: MaintenanceCategory; label: string }[] = [
   { value: 'plumbing', label: 'Plomberie' },
@@ -58,7 +69,7 @@ export default function NewMaintenancePage() {
   const [photos, setPhotos] = useState<File[]>([]);
   const [photoPreviewUrls, setPhotoPreviewUrls] = useState<string[]>([]);
   
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       category: '',
@@ -103,7 +114,7 @@ export default function NewMaintenancePage() {
     setPhotoPreviewUrls(updatedPreviewUrls);
   };
   
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: any) => {
     if (!userProfile || !userProfile.restaurantId) {
       toast.error('Vous devez sélectionner un restaurant');
       return;
@@ -349,11 +360,16 @@ export default function NewMaintenancePage() {
                 <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
                   {photoPreviewUrls.map((url, index) => (
                     <div key={index} className="relative">
-                      <img
-                        src={url}
-                        alt={`Preview ${index + 1}`}
-                        className="h-24 w-full object-cover rounded-md"
-                      />
+                      <div className="relative h-24 w-full">
+                        <Image
+                          src={url}
+                          alt={`Preview ${index + 1}`}
+                          fill
+                          style={{ objectFit: 'cover' }}
+                          className="rounded-md"
+                          unoptimized={url.startsWith('data:')}
+                        />
+                      </div>
                       <button
                         type="button"
                         onClick={() => removePhoto(index)}

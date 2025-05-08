@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { doc, getDoc, updateDoc, Timestamp } from 'firebase/firestore';
-import { motion } from 'framer-motion';
-import { FiArrowLeft, FiEdit2, FiTrash2, FiCheck, FiX, FiClock, FiUser, FiMapPin, FiPackage, FiRepeat, FiImage } from 'react-icons/fi';
+import { FiArrowLeft, FiEdit2, FiCheck, FiX, FiClock, FiUser, FiMapPin, FiTag, FiImage, FiPackage, FiRepeat } from 'react-icons/fi';
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/contexts/AuthContext';
 import MainLayout from '@/components/layout/MainLayout';
@@ -110,7 +110,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
     try {
       const orderRef = doc(db, 'orders', order.id);
       
-      const updates: any = {
+      const updates: Partial<Order> = {
         status: editStatus,
         priority: editPriority,
         comments: editComments,
@@ -549,11 +549,16 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                     className="relative cursor-pointer"
                     onClick={() => setSelectedImage(url)}
                   >
-                    <img
-                      src={url}
-                      alt={`Photo ${index + 1}`}
-                      className="h-32 w-full object-cover rounded-md"
-                    />
+                    <div className="relative h-32 w-full">
+                      <Image
+                        src={url}
+                        alt={`Photo ${index + 1}`}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        unoptimized={url.startsWith('data:')}
+                        className="rounded-md"
+                      />
+                    </div>
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black bg-opacity-50 rounded-md">
                       <FiImage className="h-6 w-6 text-white" />
                     </div>
@@ -571,11 +576,16 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                     >
                       <FiX className="h-6 w-6" />
                     </button>
-                    <img
-                      src={selectedImage}
-                      alt="Image agrandie"
-                      className="w-full h-auto max-h-[80vh] object-contain"
-                    />
+                    <div className="relative h-[80vh] w-full">
+                      <Image
+                        src={selectedImage}
+                        alt="Image agrandie"
+                        fill
+                        style={{ objectFit: 'contain' }}
+                        unoptimized={selectedImage.startsWith('data:')}
+                        className="rounded-md"
+                      />
+                    </div>
                   </div>
                 </div>
               )}

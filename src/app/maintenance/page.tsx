@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { collection, query, where, orderBy, getDocs, Timestamp } from 'firebase/firestore';
+import { collection, query, where, getDocs, Timestamp } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import { FiPlus, FiFilter, FiSearch, FiCalendar, FiDownload, FiChevronDown, FiChevronUp, FiTool } from 'react-icons/fi';
 import { db } from '@/lib/firebase';
@@ -150,11 +150,20 @@ export default function MaintenancePage() {
     
     // Tri
     if (sortConfig.key) {
+      // Ne trie que si la clé est une propriété valide de MaintenanceRequest
       result.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
+        const keyA = a[sortConfig.key as keyof MaintenanceRequest];
+        const keyB = b[sortConfig.key as keyof MaintenanceRequest];
+        
+        // Gestion des valeurs undefined ou null
+        if (keyA === undefined || keyA === null) return sortConfig.direction === 'asc' ? -1 : 1;
+        if (keyB === undefined || keyB === null) return sortConfig.direction === 'asc' ? 1 : -1;
+        
+        // Comparaison des valeurs définies
+        if (keyA < keyB) {
           return sortConfig.direction === 'asc' ? -1 : 1;
         }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
+        if (keyA > keyB) {
           return sortConfig.direction === 'asc' ? 1 : -1;
         }
         return 0;
