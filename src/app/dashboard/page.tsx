@@ -242,7 +242,7 @@ export default function DashboardPage() {
                 className="w-full"
                 onClick={() => router.push('/activity')}
               >
-                Voir toute l'activité
+                Voir toute l&apos;activité
               </Button>
             </div>
           </motion.div>
