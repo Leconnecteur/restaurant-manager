@@ -9,7 +9,6 @@ import * as yup from 'yup';
 import { motion } from 'framer-motion';
 import { FiMail, FiLock, FiAlertCircle } from 'react-icons/fi';
 import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/Button';
 import toast from 'react-hot-toast';
 
 // Form validation schema
@@ -38,16 +37,24 @@ export default function LoginPage() {
       await login(data.email, data.password);
       toast.success('Connexion réussie');
       router.push('/dashboard');
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Login error:', err);
       
       // Handle different Firebase auth errors
-      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
-        setError('Email ou mot de passe incorrect');
-      } else if (err.code === 'auth/too-many-requests') {
-        setError('Trop de tentatives. Veuillez réessayer plus tard');
+      if (err && typeof err === 'object' && 'code' in err) {
+        const firebaseError = err as { code: string; message?: string };
+        
+        if (firebaseError.code === 'auth/user-not-found') {
+          setError('Aucun compte associé à cet email');
+        } else if (firebaseError.code === 'auth/wrong-password') {
+          setError('Mot de passe incorrect');
+        } else if (firebaseError.code === 'auth/too-many-requests') {
+          setError('Trop de tentatives, réessayez plus tard');
+        } else {
+          setError(`Erreur de connexion: ${firebaseError.message || 'Erreur inconnue'}`);
+        }
       } else {
-        setError('Une erreur est survenue. Veuillez réessayer');
+        setError('Une erreur inattendue est survenue');
       }
       
       toast.error('Échec de la connexion');

@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { collection, query, where, orderBy, limit, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import { motion } from 'framer-motion';
-import { FiShoppingCart, FiTool, FiAlertCircle, FiCheckCircle, FiClock } from 'react-icons/fi';
+import { FiShoppingCart, FiTool, FiClock } from 'react-icons/fi';
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/contexts/AuthContext';
 import MainLayout from '@/components/layout/MainLayout';
@@ -13,7 +13,7 @@ import { Order, MaintenanceRequest, Request } from '@/types';
 import { formatDate, getPriorityColor, getStatusColor } from '@/lib/utils';
 
 export default function DashboardPage() {
-  const { userProfile, loading, setActiveRestaurant } = useAuth();
+  const { userProfile, loading } = useAuth();
   const router = useRouter();
   const [pendingOrders, setPendingOrders] = useState<Order[]>([]);
   const [pendingMaintenance, setPendingMaintenance] = useState<MaintenanceRequest[]>([]);

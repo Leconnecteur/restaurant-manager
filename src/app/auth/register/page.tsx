@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { motion } from 'framer-motion';
@@ -11,7 +11,7 @@ import { FiMail, FiLock, FiUser, FiAlertCircle, FiBriefcase, FiMapPin } from 're
 import { useAuth } from '@/contexts/AuthContext';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { Button } from '@/components/ui/Button';
+// Import supprimé car non utilisé
 import toast from 'react-hot-toast';
 
 // Form validation schema
@@ -60,7 +60,7 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [selectedRole, setSelectedRole] = useState<string>('');
   
-  const { register, handleSubmit, watch, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -75,8 +75,12 @@ export default function RegisterPage() {
       // Mettre à jour le profil avec le rôle et le restaurant
       if (user) {
         try {
-          const profileData: any = {
-            role: data.role
+          const profileData: {
+            role: string;
+            restaurantId: string | null;
+          } = {
+            role: data.role,
+            restaurantId: null // Valeur initiale qui sera mise à jour ci-dessous
           };
           
           // Si ce n'est pas un rôle de maintenance, ajouter le restaurant
@@ -107,22 +111,26 @@ export default function RegisterPage() {
       setTimeout(() => {
         window.location.href = '/dashboard';
       }, 2000);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Registration error:', err);
       
       // Gérer différentes erreurs Firebase Auth
-      if (err.code === 'auth/email-already-in-use') {
-        setError('Cet email est déjà utilisé');
-      } else if (err.code === 'auth/invalid-email') {
-        setError('Email invalide');
-      } else if (err.code === 'auth/weak-password') {
-        setError('Le mot de passe est trop faible');
-      } else if (err.code && err.code.startsWith('auth/')) {
-        setError(`Erreur d'authentification: ${err.message}`);
-      } else if (err.message && err.message.includes('network')) {
-        setError('Problème de connexion réseau. Vérifiez votre connexion internet.');
+      if (err && typeof err === 'object' && 'code' in err) {
+        const firebaseError = err as { code: string; message?: string };
+        
+        if (firebaseError.code === 'auth/email-already-in-use') {
+          setError('Cet email est déjà utilisé');
+        } else if (firebaseError.code === 'auth/invalid-email') {
+          setError('Email invalide');
+        } else if (firebaseError.code === 'auth/weak-password') {
+          setError(`Mot de passe trop faible: ${firebaseError.message || ''}`);
+        } else if (firebaseError.code === 'auth/too-many-requests') {
+          setError('Trop de tentatives, réessayez plus tard');
+        } else {
+          setError(`Erreur lors de l'inscription: ${firebaseError.message || 'Erreur inconnue'}`);
+        }
       } else {
-        setError('Une erreur est survenue lors de la création du compte. Veuillez réessayer.');
+        setError('Une erreur inattendue est survenue');
       }
       
       toast.error('Échec de l\'inscription');
