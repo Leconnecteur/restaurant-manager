@@ -55,22 +55,7 @@ const schema = yup.object().shape({
   ).min(1, 'Au moins un article est requis'),
 }).required();
 
-interface OrderItem {
-  name: string;
-  quantity: number;
-  unit: string;
-  notes?: string;
-}
-
-interface FormData {
-  category: string;
-  priority: string;
-  department: string;
-  comments?: string;
-  isRecurring?: boolean;
-  recurringFrequency?: string;
-  items: OrderItem[];
-}
+// L'interface OrderItem est incluse dans OrderFormData
 
 const orderCategories: { value: OrderCategory; label: string }[] = [
   { value: 'glassware', label: 'Verrerie' },

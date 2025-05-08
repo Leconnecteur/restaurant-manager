@@ -7,10 +7,10 @@ import { useAuth } from '@/contexts/AuthContext';
 import MainLayout from '@/components/layout/MainLayout';
 import { Order, MaintenanceRequest } from '@/types';
 import { 
-  BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, 
+  BarChart, Bar, PieChart, Pie, Cell, 
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer 
 } from 'recharts';
-import { FiDownload, FiFilter, FiRefreshCw } from 'react-icons/fi';
+import { FiDownload, FiRefreshCw } from 'react-icons/fi';
 import { Button } from '@/components/ui/Button';
 import { formatDate } from '@/lib/utils';
 

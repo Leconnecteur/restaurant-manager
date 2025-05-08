@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion'; // Non utilisé
 
 export default function Home() {
   const { currentUser, userProfile, loading } = useAuth();
