@@ -25,6 +25,7 @@ interface MainLayoutProps {
 const MainLayout = ({ children }: MainLayoutProps) => {
   const { userProfile, logout, setActiveRestaurant } = useAuth();
   // Utiliser useNotifications() pour maintenir la cohérence, mais sans utiliser ses valeurs
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const _notificationContext = useNotifications();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

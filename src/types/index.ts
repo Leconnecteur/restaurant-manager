@@ -1,5 +1,5 @@
 import { Timestamp } from 'firebase/firestore';
-import { RestaurantId, UserRole } from '@/contexts/AuthContext';
+import { RestaurantId } from '@/contexts/AuthContext';
 
 // Niveaux de priorité pour les commandes et demandes de maintenance
 export type PriorityLevel = 'urgent' | 'normal' | 'planned';

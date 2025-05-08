@@ -1,5 +1,5 @@
 import React, { ButtonHTMLAttributes, forwardRef } from 'react';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion'; // Non utilisé
 import { cva, type VariantProps } from 'class-variance-authority';
 
 // Utility function for combining class names
@@ -43,7 +43,7 @@ export interface ButtonProps
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, /* eslint-disable-next-line @typescript-eslint/no-unused-vars */ asChild = false, ...props }, ref) => {
     return (
       <button
         className={cn(buttonVariants({ variant, size, className }))}
