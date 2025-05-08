@@ -515,7 +515,7 @@ export default function MaintenancePage() {
                     <tr 
                       key={request.id}
                       className="hover:bg-gray-50 cursor-pointer"
-                      onClick={() => router.push(`/maintenance/${request.id}`)}
+                      onClick={() => router.push(`/maintenance/detail?id=${request.id}`)}
                     >
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {formatDate(request.createdAt.toDate())}
@@ -560,7 +560,7 @@ export default function MaintenancePage() {
                           className="text-xs"
                           onClick={(e) => {
                             e.stopPropagation();
-                            router.push(`/maintenance/${request.id}`);
+                            router.push(`/maintenance/detail?id=${request.id}`);
                           }}
                         >
                           Voir détails
