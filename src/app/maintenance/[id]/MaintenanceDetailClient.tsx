@@ -182,8 +182,8 @@ export default function MaintenanceDetailClient({ id }: { id: string }) {
   const canEditRequest = () => {
     if (!userProfile || !request) return false;
     
-    // Les administrateurs peuvent éditer toutes les demandes
-    if (userProfile.role === 'admin' || userProfile.role === 'maintenance') return true;
+    // Les admins (rôle maintenance) peuvent éditer toutes les demandes
+    if (userProfile.role === 'maintenance') return true;
     
     // Les managers de restaurant peuvent éditer les demandes de leur restaurant
     if (
@@ -242,7 +242,7 @@ export default function MaintenanceDetailClient({ id }: { id: string }) {
               <FiArrowLeft className="h-5 w-5" />
             </Button>
             <h1 className="text-2xl font-bold text-gray-900">
-              {request.title}
+              {request.category} - {request.location}
             </h1>
           </div>
           
@@ -310,7 +310,7 @@ export default function MaintenanceDetailClient({ id }: { id: string }) {
                     <FiUser className="h-5 w-5 text-gray-400 mt-0.5 mr-3" />
                     <div>
                       <p className="text-sm font-medium text-gray-500">Créé par</p>
-                      <p className="text-sm text-gray-900">{request.createdByName || 'Non spécifié'}</p>
+                      <p className="text-sm text-gray-900">{request.createdBy || 'Non spécifié'}</p>
                     </div>
                   </div>
                   
