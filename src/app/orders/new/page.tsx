@@ -88,7 +88,7 @@ export default function NewOrderPage() {
   const [photos, setPhotos] = useState<File[]>([]);
   const [photoPreviewUrls, setPhotoPreviewUrls] = useState<string[]>([]);
   
-  // @ts-expect-error - Le type du resolver est compatible mais TypeScript ne peut pas l'inférer correctement
+  // @ts-ignore - Le type du resolver Yup et le type OrderFormData sont compatibles mais TypeScript ne l'infère pas correctement
   const { register, handleSubmit, control, watch, formState: { errors } } = useForm<OrderFormData>({
     resolver: yupResolver(schema),
     defaultValues: {
