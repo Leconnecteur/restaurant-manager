@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiBell, FiX, FiCheck, FiTrash2 } from 'react-icons/fi';
+import { FiBell, FiX, FiCheck } from 'react-icons/fi';
 import { useNotifications } from './NotificationProvider';
 import { formatDate } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';

@@ -30,7 +30,7 @@ export default function ProfilePage() {
     try {
       await updateUserProfile({ displayName, photoURL });
       setSuccess(true);
-    } catch (err: unknown) {
+    } catch (_err: unknown) {
       setError("Erreur lors de la mise à jour du profil.");
     } finally {
       setSaving(false);

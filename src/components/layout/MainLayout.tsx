@@ -24,7 +24,8 @@ interface MainLayoutProps {
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   const { userProfile, logout, setActiveRestaurant } = useAuth();
-  const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
+  // Utiliser useNotifications() pour maintenir la cohérence, mais sans utiliser ses valeurs
+  const _notificationContext = useNotifications();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -48,6 +49,8 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     // Vérifier si l'utilisateur a le droit de changer de restaurant
     if (userProfile?.role === 'maintenance' || id === userProfile?.restaurantId) {
       if (userProfile?.restaurantId !== id) {
+        // Le type RestaurantId nécessite un cast
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         await setActiveRestaurant(id as any);
         setDropdownOpen(false);
       }
