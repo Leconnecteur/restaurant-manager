@@ -513,7 +513,7 @@ export default function OrdersPage() {
                     <tr 
                       key={order.id}
                       className="hover:bg-gray-50 cursor-pointer"
-                      onClick={() => router.push(`/orders/${order.id}`)}
+                      onClick={() => router.push(`/orders/detail?id=${order.id}`)}
                     >
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {formatDate(order.createdAt.toDate())}
@@ -555,7 +555,7 @@ export default function OrdersPage() {
                           className="text-xs"
                           onClick={(e) => {
                             e.stopPropagation();
-                            router.push(`/orders/${order.id}`);
+                            router.push(`/orders/detail?id=${order.id}`);
                           }}
                         >
                           Voir détails

@@ -12,6 +12,7 @@ export type OrderCategory =
   | 'glassware' // Verrerie
   | 'alcohol' // Alcool
   | 'food' // Nourriture
+  | 'drinks' // Boissons
   | 'cleaning_supplies' // Produits d'entretien
   | 'tableware' // Vaisselle
   | 'kitchen_supplies' // Fournitures de cuisine
@@ -59,6 +60,7 @@ export interface Order extends BaseRequest {
   recurringFrequency?: 'daily' | 'weekly' | 'monthly';
   estimatedDeliveryDate?: Timestamp;
   actualDeliveryDate?: Timestamp;
+  assignedTo?: string; // User ID of responsible personnel
 }
 
 // Maintenance request interface
