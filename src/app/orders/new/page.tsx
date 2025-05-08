@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { useForm, useFieldArray, Controller } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 // import { motion } from 'framer-motion'; // Non utilisé
@@ -17,8 +17,24 @@ import { Button } from '@/components/ui/Button';
 import { OrderCategory, PriorityLevel } from '@/types';
 import toast from 'react-hot-toast';
 
+// Définition du type OrderFormData
+type OrderFormData = {
+  category: string;
+  priority: string;
+  department: string;
+  comments?: string | null;
+  isRecurring: boolean;
+  recurringFrequency?: string;
+  items: {
+    name: string;
+    quantity: number;
+    unit: string;
+    notes?: string;
+  }[];
+};
+
 // Form validation schema
-const schema = yup.object({
+const schema = yup.object().shape({
   category: yup.string().required('Catégorie requise'),
   priority: yup.string().required('Priorité requise'),
   department: yup.string().required('Département requis'),
@@ -87,8 +103,8 @@ export default function NewOrderPage() {
   const [photos, setPhotos] = useState<File[]>([]);
   const [photoPreviewUrls, setPhotoPreviewUrls] = useState<string[]>([]);
   
-  const { register, handleSubmit, control, watch, formState: { errors } } = useForm<FormData>({
-    resolver: yupResolver(schema) as any,
+  const { register, handleSubmit, control, watch, formState: { errors } } = useForm<OrderFormData>({
+    resolver: yupResolver(schema),
     defaultValues: {
       category: '',
       priority: 'normal',
@@ -105,7 +121,7 @@ export default function NewOrderPage() {
     name: 'items',
   });
   
-  const isRecurring = watch('isRecurring');
+  const isRecurring = watch('isRecurring') as boolean;
   
   // Redirect if not authenticated
   useEffect(() => {
@@ -140,7 +156,7 @@ export default function NewOrderPage() {
     setPhotoPreviewUrls(updatedPreviewUrls);
   };
   
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: OrderFormData) => {
     if (!userProfile || !userProfile.restaurantId) {
       toast.error('Vous devez sélectionner un restaurant');
       return;
@@ -384,11 +400,16 @@ export default function NewOrderPage() {
                 <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
                   {photoPreviewUrls.map((url, index) => (
                     <div key={index} className="relative">
-                      <img
-                        src={url}
-                        alt={`Preview ${index + 1}`}
-                        className="h-24 w-full object-cover rounded-md"
-                      />
+                      <div className="relative h-24 w-full">
+                        <Image
+                          src={url}
+                          alt={`Preview ${index + 1}`}
+                          fill
+                          style={{ objectFit: 'cover' }}
+                          className="rounded-md"
+                          unoptimized={url.startsWith('data:')}
+                        />
+                      </div>
                       <button
                         type="button"
                         onClick={() => removePhoto(index)}

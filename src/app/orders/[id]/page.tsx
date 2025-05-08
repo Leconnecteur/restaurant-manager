@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { doc, getDoc, updateDoc, Timestamp } from 'firebase/firestore';
-import { FiArrowLeft, FiEdit2, FiCheck, FiX, FiClock, FiUser, FiMapPin, FiTag, FiImage, FiPackage, FiRepeat } from 'react-icons/fi';
+import { FiArrowLeft, FiEdit2, FiCheck, FiX, FiClock, FiUser, FiMapPin, FiImage, FiPackage, FiRepeat } from 'react-icons/fi';
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/contexts/AuthContext';
 import MainLayout from '@/components/layout/MainLayout';

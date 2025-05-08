@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { collection, query, where, orderBy, getDocs, Timestamp } from 'firebase/firestore';
+import { collection, query, where, getDocs, Timestamp } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import { FiPlus, FiFilter, FiSearch, FiCalendar, FiDownload, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { db } from '@/lib/firebase';
@@ -151,10 +151,18 @@ export default function OrdersPage() {
     // Tri
     if (sortConfig.key) {
       result.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
+        const keyA = a[sortConfig.key as keyof Order];
+        const keyB = b[sortConfig.key as keyof Order];
+        
+        // Gestion des valeurs undefined ou null
+        if (keyA === undefined || keyA === null) return sortConfig.direction === 'asc' ? -1 : 1;
+        if (keyB === undefined || keyB === null) return sortConfig.direction === 'asc' ? 1 : -1;
+        
+        // Comparaison des valeurs définies
+        if (keyA < keyB) {
           return sortConfig.direction === 'asc' ? -1 : 1;
         }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
+        if (keyA > keyB) {
           return sortConfig.direction === 'asc' ? 1 : -1;
         }
         return 0;

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 // import { motion } from 'framer-motion'; // Non utilisé
@@ -114,7 +114,7 @@ export default function NewMaintenancePage() {
     setPhotoPreviewUrls(updatedPreviewUrls);
   };
   
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormData) => {
     if (!userProfile || !userProfile.restaurantId) {
       toast.error('Vous devez sélectionner un restaurant');
       return;
