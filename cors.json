@@ -1,0 +1,8 @@
+[
+  {
+    "origin": ["http://localhost:3000", "https://restaurant-manager-e1e4b.web.app"],
+    "method": ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"],
+    "maxAgeSeconds": 3600,
+    "responseHeader": ["Content-Type", "Content-Length", "Content-Encoding", "Content-Disposition"]
+  }
+]

@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Windsurf - Application de Gestion des Commandes et Maintenance Multi-Restaurants
 
-## Getting Started
+## Description
 
-First, run the development server:
+Windsurf est une application web développée pour un groupe de 4 restaurants permettant de centraliser et gérer les commandes d'approvisionnement et les demandes de maintenance. Cette application remplace les groupes WhatsApp disparates utilisés auparavant, offrant une solution plus structurée et efficace.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Fonctionnalités
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Authentification et profils** : Système de connexion sécurisé avec gestion des rôles utilisateurs
+- **Gestion des commandes** : Création, suivi et historique des commandes d'approvisionnement
+- **Gestion des demandes de maintenance** : Formulaires de demande d'intervention avec suivi d'état
+- **Tableau de bord personnalisé** : Vue adaptée selon le rôle de l'utilisateur
+- **Notifications en temps réel** : Alertes pour les nouvelles commandes et mises à jour
+- **Rapports et statistiques** : Visualisation des données de consommation et de performance
+- **Interface responsive** : Adaptée aux mobiles, tablettes et ordinateurs de bureau
+- **Code couleur** : Différenciation visuelle des 4 restaurants
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technologies utilisées
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Frontend** : Next.js, TypeScript, Tailwind CSS, Framer Motion
+- **Backend** : Firebase (Authentification, Firestore, Storage)
+- **Déploiement** : Vercel
 
-## Learn More
+## Installation
 
-To learn more about Next.js, take a look at the following resources:
+1. Cloner le dépôt :
+   ```bash
+   git clone https://github.com/votre-compte/windsurf-restaurant-manager.git
+   cd windsurf-restaurant-manager
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Installer les dépendances :
+   ```bash
+   npm install
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. Configurer Firebase :
+   - Créer un projet Firebase sur [console.firebase.google.com](https://console.firebase.google.com)
+   - Activer l'authentification par email/mot de passe
+   - Activer Firestore Database
+   - Activer Storage
+   - Copier les clés d'API dans un fichier `.env.local` à la racine du projet :
+   ```
+   NEXT_PUBLIC_FIREBASE_API_KEY=votre-cle-api
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=votre-domaine.firebaseapp.com
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=votre-projet-id
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=votre-bucket.appspot.com
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=votre-sender-id
+   NEXT_PUBLIC_FIREBASE_APP_ID=votre-app-id
+   ```
 
-## Deploy on Vercel
+4. Lancer le serveur de développement :
+   ```bash
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. Ouvrir [http://localhost:3000](http://localhost:3000) dans votre navigateur
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Déploiement
+
+L'application est configurée pour être déployée sur Vercel :
+
+1. Connectez-vous à [Vercel](https://vercel.com)
+2. Importez votre dépôt GitHub
+3. Configurez les variables d'environnement
+4. Déployez l'application
+
+## Structure des utilisateurs
+
+- **Employé de manutention** : Gère l'ensemble des commandes et réparations pour les 4 restaurants
+- **Managers de restaurant** : Peuvent passer des commandes pour leur établissement
+- **Managers de salle** : Passent des commandes spécifiques à la salle
+- **Managers de bar** : Passent des commandes spécifiques au bar
+- **Autres employés** : Accès limités selon les besoins
