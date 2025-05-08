@@ -110,7 +110,8 @@ export default function MaintenanceDetailClient({ id }: { id: string }) {
     try {
       setIsUpdating(true);
       
-      const updateData: Record<string, any> = {
+      // Définir un type plus spécifique que 'any'
+      const updateData: Record<string, string | boolean | Timestamp | undefined> = {
         status: editStatus,
         priority: editPriority,
         comments: editComments,
@@ -381,7 +382,7 @@ export default function MaintenanceDetailClient({ id }: { id: string }) {
                     
                     <div>
                       <label htmlFor="estimatedCompletionDate" className="block text-sm font-medium text-gray-700 mb-1">
-                        Date d'achèvement estimée
+                        Date d&apos;achèvement estimée
                       </label>
                       <input
                         type="date"
@@ -395,7 +396,7 @@ export default function MaintenanceDetailClient({ id }: { id: string }) {
                     {editStatus === 'completed' && (
                       <div>
                         <label htmlFor="actualCompletionDate" className="block text-sm font-medium text-gray-700 mb-1">
-                          Date d'achèvement réelle
+                          Date d&apos;achèvement réelle
                         </label>
                         <input
                           type="date"
