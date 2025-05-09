@@ -1,10 +1,9 @@
 'use client';
-// @ts-nocheck - désactivation temporaire des vérifications TypeScript pour permettre le build
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, FieldError, FieldErrors } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 // import { motion } from 'framer-motion'; // Non utilisé
@@ -18,9 +17,22 @@ import { Button } from '@/components/ui/Button';
 import { OrderCategory, PriorityLevel } from '@/types';
 import toast from 'react-hot-toast';
 
-// Définition du type pour le formulaire avec 'any' pour éviter les problèmes de typage stricte
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type OrderFormData = any;
+interface OrderItemForm {
+  name: string;
+  quantity: number;
+  unit: string;
+  notes: string;
+}
+
+interface OrderFormData {
+  category: OrderCategory;
+  priority: PriorityLevel;
+  department: 'room' | 'bar' | 'kitchen' | 'general';
+  comments: string;
+  isRecurring: boolean;
+  recurringFrequency?: string;
+  items: OrderItemForm[];
+}
 
 // Form validation schema
 const schema = yup.object({
@@ -98,7 +110,7 @@ export default function NewOrderPage() {
     name: 'items',
   });
   
-  const isRecurring = watch('isRecurring') as boolean;
+  const isRecurring = watch('isRecurring');
   
   // Redirect if not authenticated
   useEffect(() => {
@@ -275,7 +287,7 @@ export default function NewOrderPage() {
                   ))}
                 </select>
                 {errors.priority && (
-                  <p className="text-red-600 text-sm">{errors.priority.message}</p>
+                  <p className="text-red-600 text-sm">{String(errors.priority.message || 'Erreur de validation')}</p>
                 )}
               </div>
               
@@ -298,7 +310,7 @@ export default function NewOrderPage() {
                   ))}
                 </select>
                 {errors.department && (
-                  <p className="text-red-600 text-sm">{errors.department.message}</p>
+                  <p className="text-red-600 text-sm">{String(errors.department.message || 'Erreur de validation')}</p>
                 )}
               </div>
               
@@ -331,7 +343,7 @@ export default function NewOrderPage() {
                       <option value="monthly">Mensuelle</option>
                     </select>
                     {errors.recurringFrequency && (
-                      <p className="text-red-600 text-sm">{errors.recurringFrequency.message}</p>
+                      <p className="text-red-600 text-sm">{String(errors.recurringFrequency.message || 'Erreur de validation')}</p>
                     )}
                   </div>
                 )}
@@ -443,7 +455,7 @@ export default function NewOrderPage() {
                         placeholder="Ex: Bouteilles de vin rouge"
                       />
                       {errors.items?.[index]?.name && (
-                        <p className="text-red-600 text-xs">{errors.items?.[index]?.name?.message}</p>
+                        <p className="text-red-600 text-xs">{String(errors.items?.[index]?.name?.message || 'Erreur de validation')}</p>
                       )}
                     </div>
                     
@@ -461,7 +473,7 @@ export default function NewOrderPage() {
                         } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500`}
                       />
                       {errors.items?.[index]?.quantity && (
-                        <p className="text-red-600 text-xs">{errors.items?.[index]?.quantity?.message}</p>
+                        <p className="text-red-600 text-xs">{String(errors.items?.[index]?.quantity?.message || 'Erreur de validation')}</p>
                       )}
                     </div>
                     
@@ -479,7 +491,7 @@ export default function NewOrderPage() {
                         placeholder="Ex: bouteilles, kg, cartons"
                       />
                       {errors.items?.[index]?.unit && (
-                        <p className="text-red-600 text-xs">{errors.items?.[index]?.unit?.message}</p>
+                        <p className="text-red-600 text-xs">{String(errors.items?.[index]?.unit?.message || 'Erreur de validation')}</p>
                       )}
                     </div>
                     
@@ -501,7 +513,7 @@ export default function NewOrderPage() {
               
               {errors.items && !Array.isArray(errors.items) && (
                 <p className="text-red-600 text-sm flex items-center">
-                  {errors.items.message}
+                  {String(errors.items.message || 'Erreur de validation')}
                 </p>
               )}
             </div>
