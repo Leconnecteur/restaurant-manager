@@ -22,7 +22,7 @@ type OrderFormData = {
   category: string;
   priority: string;
   department: string;
-  comments?: string | undefined;
+  comments: string; // Suppression du caractère optionnel
   isRecurring: boolean;
   recurringFrequency?: string;
   items: {
@@ -38,7 +38,7 @@ const schema = yup.object().shape({
   category: yup.string().required('Catégorie requise'),
   priority: yup.string().required('Priorité requise'),
   department: yup.string().required('Département requis'),
-  comments: yup.string().nullable().transform((value) => (value === null ? undefined : value)),
+  comments: yup.string().required().default(''),
   isRecurring: yup.boolean().optional().default(false),
   recurringFrequency: yup.string().when('isRecurring', {
     is: true,
@@ -88,7 +88,6 @@ export default function NewOrderPage() {
   const [photos, setPhotos] = useState<File[]>([]);
   const [photoPreviewUrls, setPhotoPreviewUrls] = useState<string[]>([]);
   
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { register, handleSubmit, control, watch, formState: { errors } } = useForm<OrderFormData>({
     resolver: yupResolver(schema),
     defaultValues: {
