@@ -72,9 +72,9 @@ export default function OrdersPage() {
       try {
         setIsLoading(true);
         
-        // Paramètres de requête basés sur le rôle de l'utilisateur
-        const isMaintenanceStaff = userProfile.role === 'maintenance';
-        const restaurantFilter = !isMaintenanceStaff && userProfile.restaurantId 
+        // Paramètres de requête basés sur le restaurant sélectionné
+        // Si un restaurant est sélectionné (pour tous les rôles, y compris manutentionnaires)
+        const restaurantFilter = userProfile.restaurantId 
           ? where('restaurantId', '==', userProfile.restaurantId) 
           : null;
         
