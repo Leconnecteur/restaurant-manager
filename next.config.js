@@ -1,23 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Configuration minimale pour Vercel
   reactStrictMode: true,
-  output: 'standalone',
-  trailingSlash: true,
   images: {
     domains: ['firebasestorage.googleapis.com'],
-    dangerouslyAllowSVG: true,
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
-    ],
     unoptimized: true,
   },
-  // Assurez-vous que les ressources statiques sont correctement chargées
-  assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
-  // Optimisation pour le déploiement Vercel
-  outputFileTracing: true,
+  // Désactiver les optimisations qui pourraient causer des problèmes
+  swcMinify: false,
 };
 
 module.exports = nextConfig;
