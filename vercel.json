@@ -1,17 +1,9 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/"
-    }
-  ],
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
   "env": {
     "NEXT_PUBLIC_FIREBASE_API_KEY": "",
     "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN": "",
