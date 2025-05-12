@@ -473,7 +473,7 @@ export default function OrdersPage() {
                 <div 
                   key={order.id} 
                   className="bg-white rounded-lg shadow p-4 border-l-4 border-[#232325]"
-                  onClick={() => router.push(`/orders/${order.id}`)}
+                  onClick={() => router.push(`/orders/detail?id=${order.id}`)}
                 >
                   <div className="flex justify-between items-start mb-3">
                     <div>
@@ -512,7 +512,7 @@ export default function OrdersPage() {
                       className="text-sm py-2"
                       onClick={(e) => {
                         e.stopPropagation();
-                        router.push(`/orders/${order.id}`);
+                        router.push(`/orders/detail?id=${order.id}`);
                       }}
                     >
                       Voir détails
@@ -556,7 +556,7 @@ export default function OrdersPage() {
                       <tr 
                         key={order.id}
                         className="hover:bg-gray-50 cursor-pointer"
-                        onClick={() => router.push(`/orders/${order.id}`)}
+                        onClick={() => router.push(`/orders/detail?id=${order.id}`)}
                       >
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {order.id.slice(-5)}
@@ -588,7 +588,7 @@ export default function OrdersPage() {
                             className="text-xs py-2"
                             onClick={(e) => {
                               e.stopPropagation();
-                              router.push(`/orders/${order.id}`);
+                              router.push(`/orders/detail?id=${order.id}`);
                             }}
                           >
                             Voir détails

@@ -473,7 +473,7 @@ export default function MaintenancePage() {
                 <div 
                   key={request.id} 
                   className="bg-white rounded-lg shadow p-4 border-l-4 border-[#232325]"
-                  onClick={() => router.push(`/maintenance/${request.id}`)}
+                  onClick={() => router.push(`/maintenance/detail?id=${request.id}`)}
                 >
                   <div className="flex justify-between items-start mb-3">
                     <div>
@@ -519,7 +519,7 @@ export default function MaintenancePage() {
                       className="text-sm py-2"
                       onClick={(e) => {
                         e.stopPropagation();
-                        router.push(`/maintenance/${request.id}`);
+                        router.push(`/maintenance/detail?id=${request.id}`);
                       }}
                     >
                       Voir détails
@@ -566,7 +566,7 @@ export default function MaintenancePage() {
                       <tr 
                         key={request.id}
                         className="hover:bg-gray-50 cursor-pointer"
-                        onClick={() => router.push(`/maintenance/${request.id}`)}
+                        onClick={() => router.push(`/maintenance/detail?id=${request.id}`)}
                       >
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {request.id.slice(-5)}
@@ -604,7 +604,7 @@ export default function MaintenancePage() {
                             className="text-xs py-2"
                             onClick={(e) => {
                               e.stopPropagation();
-                              router.push(`/maintenance/${request.id}`);
+                              router.push(`/maintenance/detail?id=${request.id}`);
                             }}
                           >
                             Voir détails
