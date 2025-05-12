@@ -26,6 +26,14 @@ const priorityFilters: { value: PriorityLevel; label: string }[] = [
   { value: 'planned', label: 'Planifié' },
 ];
 
+// Liste des restaurants
+const restaurantOptions = [
+  { id: '1', name: 'Monsieur Mouettes' },
+  { id: '2', name: 'Gigio' },
+  { id: '3', name: 'Tigers' },
+  { id: '4', name: 'La Tétrade' },
+];
+
 const categoryFilters: { value: MaintenanceCategory; label: string }[] = [
   { value: 'plumbing', label: 'Plomberie' },
   { value: 'electrical', label: 'Électricité' },
@@ -245,7 +253,7 @@ export default function MaintenancePage() {
           
           <div className="flex flex-col sm:flex-row gap-2">
             <Button
-              variant="glow"
+              variant="restaurant"
               onClick={() => router.push('/maintenance/new')}
               className="flex items-center"
             >
@@ -532,7 +540,7 @@ export default function MaintenancePage() {
                           request.restaurantId === '3' ? 'green' : 
                           'yellow'
                         }-800`}>
-                          Restaurant {request.restaurantId}
+                          {restaurantOptions.find(r => r.id === request.restaurantId)?.name || `Restaurant ${request.restaurantId}`}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -556,7 +564,7 @@ export default function MaintenancePage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <Button
-                          variant="outline"
+                          variant="restaurant"
                           className="text-xs"
                           onClick={(e) => {
                             e.stopPropagation();

@@ -236,9 +236,9 @@ export default function NewOrderPage() {
         </div>
         
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="p-6 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
-            <h2 className="text-xl font-semibold">Détails de la commande</h2>
-            <p className="text-blue-100">Remplissez le formulaire ci-dessous pour créer une nouvelle commande</p>
+          <div className="p-6 bg-[#232325] text-white">
+            <h2 className="text-xl font-semibold text-[#FFD600]">Détails de la commande</h2>
+            <p className="text-gray-300">Remplissez le formulaire ci-dessous pour créer une nouvelle commande</p>
           </div>
           
           <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
@@ -418,7 +418,7 @@ export default function NewOrderPage() {
                 <h3 className="text-lg font-medium text-gray-900">Articles</h3>
                 <Button
                   type="button"
-                  variant="outline"
+                  variant="restaurant"
                   onClick={() => append({ name: '', quantity: 1, unit: '', notes: '' })}
                 >
                   <FiPlus className="mr-2" /> Ajouter un article
@@ -529,7 +529,7 @@ export default function NewOrderPage() {
               </Button>
               <Button
                 type="submit"
-                variant="glow"
+                variant="restaurant"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'Création en cours...' : 'Créer la commande'}

@@ -204,9 +204,9 @@ export default function NewMaintenancePage() {
         </div>
         
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="p-6 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
-            <h2 className="text-xl font-semibold">Détails de la demande</h2>
-            <p className="text-blue-100">Remplissez le formulaire ci-dessous pour créer une nouvelle demande de maintenance</p>
+          <div className="p-6 bg-[#232325] text-white">
+            <h2 className="text-xl font-semibold text-[#FFD600]">Détails de la demande</h2>
+            <p className="text-gray-300">Remplissez le formulaire ci-dessous pour créer une nouvelle demande de maintenance</p>
           </div>
           
           <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
@@ -394,7 +394,7 @@ export default function NewMaintenancePage() {
               </Button>
               <Button
                 type="submit"
-                variant="glow"
+                variant="restaurant"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'Création en cours...' : 'Créer la demande'}
