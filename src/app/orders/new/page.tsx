@@ -36,9 +36,9 @@ interface OrderFormData {
 
 // Form validation schema
 const schema = yup.object({
-  category: yup.string().required('Catégorie requise'),
-  priority: yup.string().required('Priorité requise'),
-  department: yup.string().required('Département requis'),
+  category: yup.string<OrderCategory>().required('Catégorie requise'),
+  priority: yup.string<PriorityLevel>().required('Priorité requise'),
+  department: yup.string<'room' | 'bar' | 'kitchen' | 'general'>().required('Département requis'),
   comments: yup.string().required().default(''),
   isRecurring: yup.boolean().default(false),
   recurringFrequency: yup.string().when('isRecurring', {
@@ -57,7 +57,7 @@ const schema = yup.object({
     )
     .required('Au moins un article est requis')
     .min(1, 'Au moins un article est requis'),
-});
+}) as yup.ObjectSchema<OrderFormData>;
 
 // L'interface OrderItem est incluse dans OrderFormData
 
