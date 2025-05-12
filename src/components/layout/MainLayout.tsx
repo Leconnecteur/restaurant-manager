@@ -192,37 +192,37 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className={`${getRestaurantBg()} ${getTextColor()} shadow-md`}>
-          <div className="flex items-center justify-between p-4">
-            {/* Mobile menu button */}
-            <button
-              className="md:hidden text-white focus:outline-none"
-              onClick={toggleMobileMenu}
+        <header className="flex items-center justify-between px-4 py-4 bg-[#232325] text-white shadow-md sticky top-0 z-10">
+          <div className="flex items-center">
+            <button 
+              onClick={toggleMobileMenu} 
+              className="text-white focus:outline-none md:hidden p-2"
+              aria-label="Menu"
             >
               {isMobileMenuOpen ? (
-                <FiX className="w-6 h-6" />
+                <FiX className="w-7 h-7" />
               ) : (
-                <FiMenu className="w-6 h-6" />
+                <FiMenu className="w-7 h-7" />
               )}
             </button>
             
-            <div className="md:hidden text-lg font-bold">Restaurant Manager</div>
+            <div className="md:hidden text-lg font-bold ml-2">Restaurant Manager</div>
+          </div>
+          
+          {/* Notifications et profil */}
+          <div className="flex items-center space-x-5">
+            <button className="relative text-white focus:outline-none p-2" aria-label="Notifications">
+              <FiBell className="w-7 h-7" />
+              <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full"></span>
+            </button>
             
-            {/* Notifications */}
-            <div className="flex items-center space-x-4">
-              <button className="relative text-white focus:outline-none">
-                <FiBell className="w-6 h-6" />
-                <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-              </button>
-              
-              <div className="hidden md:block">
-                <span className="font-medium">{userProfile?.displayName}</span>
-              </div>
+            <div className="hidden md:block">
+              <span className="font-medium">{userProfile?.displayName}</span>
             </div>
           </div>
         </header>
         
-        {/* Mobile Menu */}
+        {/* Mobile Menu - optimisé pour mobile */}
         {isMobileMenuOpen && (
           <motion.div
             initial={{ x: '-100%' }}
@@ -232,24 +232,24 @@ const MainLayout = ({ children }: MainLayoutProps) => {
             className={`fixed inset-0 z-50 ${getRestaurantBg()} text-white md:hidden`}
           >
             <div className="flex flex-col h-full">
-              <div className="p-4 border-b border-white/10 flex justify-between items-center">
+              <div className="py-5 px-4 border-b border-white/10 flex justify-between items-center">
                 <h1 className="text-xl font-bold">Restaurant Manager</h1>
-                <button onClick={toggleMobileMenu}>
-                  <FiX className="w-6 h-6" />
+                <button onClick={toggleMobileMenu} className="p-2" aria-label="Fermer le menu">
+                  <FiX className="w-7 h-7" />
                 </button>
               </div>
 
-              {/* Sélecteur de restaurant pour mobile */}
+              {/* Sélecteur de restaurant pour mobile - optimisé */}
               {userProfile?.role === 'maintenance' && (
-                <div className="p-4 border-b border-white/10">
-                  <p className="text-sm font-semibold mb-2 text-white/80">Restaurant actif</p>
-                  <div className="grid grid-cols-2 gap-2">
+                <div className="py-4 px-4 border-b border-white/10">
+                  <p className="text-base font-semibold mb-3 text-white/90">Restaurant actif</p>
+                  <div className="grid grid-cols-1 gap-3">
                     {restaurantOptions.map(option => (
                       <button
                         key={option.id}
-                        className={`py-2 px-3 rounded-lg text-sm font-medium transition-colors ${userProfile?.restaurantId === option.id
-                          ? 'bg-white/20 text-white font-bold border-l-4 border-[#FFD600]'
-                          : 'text-white/80 bg-white/10 hover:bg-white/15'
+                        className={`py-3 px-4 rounded-lg text-base font-medium transition-colors ${userProfile?.restaurantId === option.id
+                          ? 'bg-white/20 text-[#FFD600] font-bold border-l-4 border-[#FFD600]'
+                          : 'text-white/90 bg-white/10 hover:bg-white/15'
                         }`}
                         onClick={() => {
                           handleSelectRestaurant(option.id);
@@ -263,34 +263,34 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                 </div>
               )}
               
-              <nav className="flex-1 p-4 space-y-2">
+              <nav className="flex-1 py-2 px-4 space-y-3 overflow-y-auto">
                 {filteredNavItems.map((item) => (
                   <Link 
                     key={item.href} 
                     href={item.href}
-                    className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
+                    className={`flex items-center px-4 py-4 rounded-lg transition-colors ${
                       pathname === item.href
-                        ? 'bg-white/20 text-white'
-                        : 'text-white/80 hover:bg-white/10'
+                        ? 'bg-white/20 text-[#FFD600]'
+                        : 'text-white/90 hover:bg-white/15'
                     }`}
                     onClick={toggleMobileMenu}
                   >
-                    {item.icon}
-                    <span className="ml-3">{item.name}</span>
+                    <span className="text-xl">{item.icon}</span>
+                    <span className="ml-3 text-base">{item.name}</span>
                   </Link>
                 ))}
               </nav>
               
-              <div className="p-4 border-t border-white/10">
+              <div className="py-5 px-4 border-t border-white/10">
                 <Button
                   variant="ghost"
-                  className="w-full justify-start text-white hover:bg-white/10"
+                  className="w-full justify-start text-white hover:bg-white/15 py-4 text-base"
                   onClick={() => {
                     logout();
                     toggleMobileMenu();
                   }}
                 >
-                  <FiLogOut className="w-5 h-5 mr-3" />
+                  <FiLogOut className="w-6 h-6 mr-3" />
                   Déconnexion
                 </Button>
               </div>
@@ -298,8 +298,8 @@ const MainLayout = ({ children }: MainLayoutProps) => {
           </motion.div>
         )}
         
-        {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-6">
+        {/* Page Content - optimisé pour mobile */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-6">
           {children}
         </main>
       </div>

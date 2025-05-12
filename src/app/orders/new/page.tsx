@@ -230,9 +230,9 @@ export default function NewOrderPage() {
   
   return (
     <MainLayout>
-      <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">Nouvelle commande</h1>
+      <div className="w-full max-w-4xl mx-auto">
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-xl md:text-2xl font-bold">Nouvelle commande</h1>
         </div>
         
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
@@ -241,20 +241,20 @@ export default function NewOrderPage() {
             <p className="text-gray-300">Remplissez le formulaire ci-dessous pour créer une nouvelle commande</p>
           </div>
           
-          <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="p-4 md:p-6 space-y-5">
             {/* Basic Info */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* Category */}
               <div className="space-y-2">
-                <label htmlFor="category" className="text-sm font-medium text-gray-700">
-                  Catégorie <span className="text-red-500">*</span>
+                <label htmlFor="restaurantId" className="text-base font-medium text-gray-700">
+                  Restaurant <span className="text-red-500">*</span>
                 </label>
                 <select
-                  id="category"
-                  {...register('category')}
-                  className={`block w-full p-2 border ${
-                    errors.category ? 'border-red-500' : 'border-gray-300'
-                  } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500`}
+                  id="restaurantId"
+                  {...register('restaurantId')}
+                  className={`block w-full p-3 text-base border ${
+                    errors.restaurantId ? 'border-red-500' : 'border-gray-300'
+                  } rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500`}
                 >
                   <option value="">Sélectionner une catégorie</option>
                   {orderCategories.map((category) => (
@@ -270,15 +270,15 @@ export default function NewOrderPage() {
               
               {/* Priority */}
               <div className="space-y-2">
-                <label htmlFor="priority" className="text-sm font-medium text-gray-700">
+                <label htmlFor="priority" className="text-base font-medium text-gray-700">
                   Priorité <span className="text-red-500">*</span>
                 </label>
                 <select
                   id="priority"
                   {...register('priority')}
-                  className={`block w-full p-2 border ${
+                  className={`block w-full p-3 text-base border ${
                     errors.priority ? 'border-red-500' : 'border-gray-300'
-                  } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500`}
+                  } rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500`}
                 >
                   {priorityLevels.map((priority) => (
                     <option key={priority.value} value={priority.value}>
@@ -293,15 +293,15 @@ export default function NewOrderPage() {
               
               {/* Department */}
               <div className="space-y-2">
-                <label htmlFor="department" className="text-sm font-medium text-gray-700">
+                <label htmlFor="department" className="text-base font-medium text-gray-700">
                   Département <span className="text-red-500">*</span>
                 </label>
                 <select
                   id="department"
                   {...register('department')}
-                  className={`block w-full p-2 border ${
+                  className={`block w-full p-3 text-base border ${
                     errors.department ? 'border-red-500' : 'border-gray-300'
-                  } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500`}
+                  } rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500`}
                 >
                   {departments.map((dept) => (
                     <option key={dept.value} value={dept.value}>
@@ -321,9 +321,9 @@ export default function NewOrderPage() {
                     id="isRecurring"
                     type="checkbox"
                     {...register('isRecurring')}
-                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    className="h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                   />
-                  <label htmlFor="isRecurring" className="ml-2 text-sm font-medium text-gray-700">
+                  <label htmlFor="isRecurring" className="ml-3 text-base font-medium text-gray-700">
                     Commande récurrente
                   </label>
                 </div>
@@ -333,9 +333,9 @@ export default function NewOrderPage() {
                     <select
                       id="recurringFrequency"
                       {...register('recurringFrequency')}
-                      className={`block w-full p-2 border ${
+                      className={`block w-full p-3 text-base border ${
                         errors.recurringFrequency ? 'border-red-500' : 'border-gray-300'
-                      } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500`}
+                      } rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500`}
                     >
                       <option value="">Sélectionner une fréquence</option>
                       <option value="daily">Quotidienne</option>
@@ -420,6 +420,7 @@ export default function NewOrderPage() {
                   type="button"
                   variant="restaurant"
                   onClick={() => append({ name: '', quantity: 1, unit: '', notes: '' })}
+                  className="py-3 text-base"
                 >
                   <FiPlus className="mr-2" /> Ajouter un article
                 </Button>
@@ -524,6 +525,7 @@ export default function NewOrderPage() {
                 type="button"
                 variant="outline"
                 onClick={() => router.push('/orders')}
+                className="py-3 px-4 text-base"
               >
                 Annuler
               </Button>
@@ -531,6 +533,7 @@ export default function NewOrderPage() {
                 type="submit"
                 variant="restaurant"
                 disabled={isSubmitting}
+                className="py-3 px-4 text-base"
               >
                 {isSubmitting ? 'Création en cours...' : 'Créer la commande'}
               </Button>
