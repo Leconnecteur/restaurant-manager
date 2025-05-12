@@ -95,8 +95,8 @@ export default function NewOrderPage() {
   const { register, handleSubmit, control, watch, formState: { errors } } = useForm<OrderFormData>({
     resolver: yupResolver(schema),
     defaultValues: {
-      category: '',
-      priority: 'normal',
+      category: 'other' as OrderCategory,
+      priority: 'normal' as PriorityLevel,
       department: userProfile?.role === 'room_manager' ? 'room' : userProfile?.role === 'bar_manager' ? 'bar' : 'general',
       comments: '',
       isRecurring: false,
