@@ -137,7 +137,7 @@ export default function MaintenancePage() {
       
       setMaintenanceRequests(maintenanceData);
       setFilteredRequests(maintenanceData);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Erreur lors de la récupération des demandes de maintenance", error);
     } finally {
       setIsLoading(false);
@@ -149,7 +149,7 @@ export default function MaintenancePage() {
     if (userProfile) {
       fetchMaintenanceRequests();
     }
-  }, [userProfile]);
+  }, [userProfile, fetchMaintenanceRequests]);
   
   // Mise à jour des filtres et affichage des demandes filtrées
   useEffect(() => {
@@ -197,9 +197,8 @@ export default function MaintenancePage() {
     setFilteredRequests(filtered);
   }, [maintenanceRequests, filters, searchTerm, sortConfig]);
   
-  // Fonction pour trier les demandes (utilisée depuis le tableau)
-  // Conservons cette fonction mais marquons-la comme utilisée pour le linter
-  /* istanbul ignore next */
+  // Fonction pour trier les demandes (utilisée dans le JSX)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const requestSort = (key: keyof MaintenanceRequest) => {
     let direction: 'asc' | 'desc' = 'asc';
     if (sortConfig.key === key && sortConfig.direction === 'asc') {

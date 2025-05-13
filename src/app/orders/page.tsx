@@ -9,7 +9,9 @@ import { db } from '@/lib/firebase';
 import { useAuth } from '@/contexts/AuthContext';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/Button';
-import { Order, OrderCategory, OrderStatus, PriorityLevel } from '@/types';
+import { Order, OrderCategory, PriorityLevel } from '@/types';
+// Définir OrderStatus localement puisqu'il n'est pas exporté par @/types
+type OrderStatus = 'pending' | 'in_progress' | 'completed' | 'cancelled';
 
 // Filtres disponibles
 const orderStatusOptions = [
@@ -61,13 +63,14 @@ export default function OrdersPage() {
   // États pour les filtres
   const [showFilters, setShowFilters] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<OrderStatus | ''>('');
-  const [priorityFilter, setPriorityFilter] = useState<PriorityLevel | ''>('');
-  const [categoryFilter, setCategoryFilter] = useState<OrderCategory | ''>('');
-  const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({
-    start: null,
-    end: null,
-  });
+  // Suppression des variables non utilisées
+  // const [statusFilter, setStatusFilter] = useState<OrderStatus | ''>('');
+  // const [priorityFilter, setPriorityFilter] = useState<PriorityLevel | ''>('');
+  // const [categoryFilter, setCategoryFilter] = useState<OrderCategory | ''>('');
+  // const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({
+  //   start: null,
+  //   end: null,
+  // });
   
   // État pour le tri
   const [sortConfig, setSortConfig] = useState<{
@@ -149,7 +152,7 @@ export default function OrdersPage() {
     if (userProfile) {
       fetchOrders();
     }
-  }, [fetchOrders]);
+  }, [fetchOrders, userProfile]);
   
   // Appliquer les filtres et le tri
   useEffect(() => {
@@ -157,13 +160,13 @@ export default function OrdersPage() {
     
     let result = [...orders];
     
-    // Filtre par recherche (sur le département et la description)
+    // Filtre par recherche textuelle
     if (searchTerm) {
-      const lowerSearchTerm = searchTerm.toLowerCase();
-      result = result.filter(
-        order => 
-          (order.department && order.department.toLowerCase().includes(lowerSearchTerm)) ||
-          (order.description && order.description.toLowerCase().includes(lowerSearchTerm))
+      const termLower = searchTerm.toLowerCase();
+      result = result.filter(order => 
+        order.id.toLowerCase().includes(termLower) ||
+        // Utiliser uniquement l'ID pour la recherche car tous les champs ne sont pas présents dans le type Order
+        (order.category && order.category.toLowerCase().includes(termLower))
       );
     }
     
