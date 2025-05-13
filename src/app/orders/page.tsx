@@ -9,9 +9,11 @@ import { db } from '@/lib/firebase';
 import { useAuth } from '@/contexts/AuthContext';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/Button';
-import { Order, OrderCategory, PriorityLevel } from '@/types';
+import { Order, PriorityLevel } from '@/types';
 // Définir OrderStatus localement puisqu'il n'est pas exporté par @/types
 type OrderStatus = 'pending' | 'in_progress' | 'completed' | 'cancelled';
+// Type local pour les catégories de commandes
+type OrderCategory = 'glassware' | 'alcohol' | 'food' | 'cleaning_supplies' | 'tableware' | 'kitchen_supplies' | 'bar_supplies' | 'other';
 
 // Filtres disponibles
 const orderStatusOptions = [
@@ -202,11 +204,11 @@ export default function OrdersPage() {
     // Appliquer le tri
     if (sortConfig.key) {
       result.sort((a, b) => {
-        // @ts-ignore - Nous savons que la clé existe
+        // @ts-expect-error - Nous savons que la clé existe
         if (a[sortConfig.key] < b[sortConfig.key]) {
           return sortConfig.direction === 'asc' ? -1 : 1;
         }
-        // @ts-ignore - Nous savons que la clé existe
+        // @ts-expect-error - Nous savons que la clé existe
         if (a[sortConfig.key] > b[sortConfig.key]) {
           return sortConfig.direction === 'asc' ? 1 : -1;
         }
@@ -218,6 +220,7 @@ export default function OrdersPage() {
   }, [orders, searchTerm, filters, sortConfig]);
   
   // Fonction pour trier les commandes
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const requestSort = (key: keyof Order) => {
     let direction: 'asc' | 'desc' = 'asc';
     if (sortConfig.key === key && sortConfig.direction === 'asc') {
