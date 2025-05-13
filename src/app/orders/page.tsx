@@ -13,6 +13,7 @@ import { Order, PriorityLevel } from '@/types';
 // Définir OrderStatus localement puisqu'il n'est pas exporté par @/types
 type OrderStatus = 'pending' | 'in_progress' | 'completed' | 'cancelled';
 // Type local pour les catégories de commandes
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type OrderCategory = 'glassware' | 'alcohol' | 'food' | 'cleaning_supplies' | 'tableware' | 'kitchen_supplies' | 'bar_supplies' | 'other';
 
 // Filtres disponibles
