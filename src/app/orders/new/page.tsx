@@ -246,14 +246,14 @@ export default function NewOrderPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* Category */}
               <div className="space-y-2">
-                <label htmlFor="restaurantId" className="text-base font-medium text-gray-700">
-                  Restaurant <span className="text-red-500">*</span>
+                <label htmlFor="category" className="text-base font-medium text-gray-700">
+                  Catégorie <span className="text-red-500">*</span>
                 </label>
                 <select
-                  id="restaurantId"
-                  {...register('restaurantId')}
+                  id="category"
+                  {...register('category')}
                   className={`block w-full p-3 text-base border ${
-                    errors.restaurantId ? 'border-red-500' : 'border-gray-300'
+                    errors.category ? 'border-red-500' : 'border-gray-300'
                   } rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500`}
                 >
                   <option value="">Sélectionner une catégorie</option>
