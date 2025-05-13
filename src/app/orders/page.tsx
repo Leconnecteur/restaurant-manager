@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { collection, query, where, getDocs, Timestamp } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import { motion } from 'framer-motion';
-import { FiPlus, FiFilter, FiSearch, FiCalendar, FiDownload, FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { FiPlus, FiFilter, FiSearch, FiDownload } from 'react-icons/fi';
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/contexts/AuthContext';
 import MainLayout from '@/components/layout/MainLayout';
@@ -25,12 +25,12 @@ const priorityLevels = [
   { value: 'planned', label: 'Planifié' },
 ];
 
-const departments = [
-  { value: 'room', label: 'Salle' },
-  { value: 'bar', label: 'Bar' },
-  { value: 'kitchen', label: 'Cuisine' },
-  { value: 'general', label: 'Général' },
-];
+// const departments = [
+//   { value: 'room', label: 'Salle' },
+//   { value: 'bar', label: 'Bar' },
+//   { value: 'kitchen', label: 'Cuisine' },
+//   { value: 'general', label: 'Général' },
+// ];
 
 // Liste des restaurants
 const restaurantOptions = [
@@ -103,7 +103,7 @@ export default function OrdersPage() {
   };
   
   // Fonction pour récupérer les commandes
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     if (!userProfile) return;
     
     try {
@@ -142,14 +142,14 @@ export default function OrdersPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [userProfile]);
   
   // Récupérer les commandes au chargement et lorsque le profil change
   useEffect(() => {
     if (userProfile) {
       fetchOrders();
     }
-  }, [userProfile]);
+  }, [fetchOrders]);
   
   // Appliquer les filtres et le tri
   useEffect(() => {
@@ -256,7 +256,7 @@ export default function OrdersPage() {
   };
 
   // Helper pour formater les dates
-  const formatDateShort = (timestamp: any) => {
+  const formatDateShort = (timestamp: { seconds: number; nanoseconds: number } | undefined) => {
     if (!timestamp) return '';
     return new Date(timestamp.seconds * 1000).toLocaleDateString();
   };
