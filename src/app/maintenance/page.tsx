@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { collection, query, where, getDocs, Timestamp } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import { motion } from 'framer-motion';
-import { FiPlus, FiFilter, FiSearch, FiCalendar, FiDownload, FiChevronDown, FiChevronUp, FiTool } from 'react-icons/fi';
+import { FiPlus, FiFilter, FiSearch, FiDownload, FiTool } from 'react-icons/fi';
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/contexts/AuthContext';
 import MainLayout from '@/components/layout/MainLayout';
@@ -25,12 +25,12 @@ const priorityLevels = [
   { value: 'planned', label: 'Planifié' },
 ];
 
-const departments = [
-  { value: 'room', label: 'Salle' },
-  { value: 'bar', label: 'Bar' },
-  { value: 'kitchen', label: 'Cuisine' },
-  { value: 'general', label: 'Général' },
-];
+// const departments = [
+//   { value: 'room', label: 'Salle' },
+//   { value: 'bar', label: 'Bar' },
+//   { value: 'kitchen', label: 'Cuisine' },
+//   { value: 'general', label: 'Général' },
+// ];
 
 // Liste des restaurants
 const restaurantOptions = [
@@ -60,13 +60,14 @@ export default function MaintenancePage() {
   // États pour les filtres
   const [showFilters, setShowFilters] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<RequestStatus | ''>('');
-  const [priorityFilter, setPriorityFilter] = useState<PriorityLevel | ''>('');
-  const [categoryFilter, setCategoryFilter] = useState<MaintenanceCategory | ''>('');
-  const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({
-    start: null,
-    end: null,
-  });
+  // Removing unused state variables below
+  // const [statusFilter, setStatusFilter] = useState<RequestStatus | ''>('');
+  // const [priorityFilter, setPriorityFilter] = useState<PriorityLevel | ''>('');
+  // const [categoryFilter, setCategoryFilter] = useState<MaintenanceCategory | ''>('');
+  // const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({
+    // start: null,
+    // end: null,
+  // });
   
   // Filtres combinés
   const [filters, setFilters] = useState({
@@ -150,60 +151,42 @@ export default function MaintenancePage() {
     }
   }, [userProfile]);
   
-  // Appliquer les filtres et le tri
+  // Mise à jour des filtres et affichage des demandes filtrées
   useEffect(() => {
-    if (!maintenanceRequests.length) return;
-    
-    let result = [...maintenanceRequests];
-    
-    // Filtre par recherche (sur le département, la localisation et la description)
+    // Appliquer les filtres de recherche aux demandes
+    let filtered = [...maintenanceRequests];
+
+    // Filtre par recherche textuelle
     if (searchTerm) {
-      const lowerSearchTerm = searchTerm.toLowerCase();
-      result = result.filter(
-        request => 
-          (request.department && request.department.toLowerCase().includes(lowerSearchTerm)) ||
-          (request.location && request.location.toLowerCase().includes(lowerSearchTerm)) ||
-          (request.description && request.description.toLowerCase().includes(lowerSearchTerm))
+      const termLower = searchTerm.toLowerCase();
+      filtered = filtered.filter(req => 
+        req.description.toLowerCase().includes(termLower) ||
+        req.id.toLowerCase().includes(termLower) ||
+        req.location.toLowerCase().includes(termLower)
       );
     }
     
-    // Filtre par statut
+    // Appliquer les filtres additionnels
     if (filters.status) {
-      result = result.filter(request => request.status === filters.status);
+      filtered = filtered.filter(req => req.status === filters.status);
     }
     
-    // Filtre par priorité
     if (filters.priority) {
-      result = result.filter(request => request.priority === filters.priority);
+      filtered = filtered.filter(req => req.priority === filters.priority);
     }
     
-    // Filtre par catégorie
     if (filters.category) {
-      result = result.filter(request => request.category === filters.category);
+      filtered = filtered.filter(req => req.category === filters.category);
     }
     
-    // Filtre par date
-    if (filters.date) {
-      const filterDate = new Date(filters.date);
-      result = result.filter(request => {
-        if (!request.createdAt) return false;
-        const requestDate = new Date(request.createdAt.seconds * 1000);
-        return (
-          requestDate.getDate() === filterDate.getDate() &&
-          requestDate.getMonth() === filterDate.getMonth() &&
-          requestDate.getFullYear() === filterDate.getFullYear()
-        );
-      });
-    }
-    
-    // Appliquer le tri
+    // Tri des résultats
     if (sortConfig.key) {
-      result.sort((a, b) => {
-        // @ts-ignore - Nous savons que la clé existe
+      filtered.sort((a, b) => {
+        // @ts-expect-error - le typage est difficile ici car les champs sont variés
         if (a[sortConfig.key] < b[sortConfig.key]) {
           return sortConfig.direction === 'asc' ? -1 : 1;
         }
-        // @ts-ignore - Nous savons que la clé existe
+        // @ts-expect-error - le typage est difficile ici car les champs sont variés
         if (a[sortConfig.key] > b[sortConfig.key]) {
           return sortConfig.direction === 'asc' ? 1 : -1;
         }
@@ -211,8 +194,8 @@ export default function MaintenancePage() {
       });
     }
     
-    setFilteredRequests(result);
-  }, [maintenanceRequests, searchTerm, filters, sortConfig]);
+    setFilteredRequests(filtered);
+  }, [maintenanceRequests, filters, searchTerm, sortConfig, fetchMaintenanceRequests]);
   
   // Fonction pour trier les demandes
   const requestSort = (key: keyof MaintenanceRequest) => {
